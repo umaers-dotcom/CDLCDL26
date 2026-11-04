@@ -1,0 +1,64 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return signedIn()
+        && exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+        && get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    match /admins/{uid} {
+      allow get: if signedIn() && request.auth.uid == uid;
+      allow list, write: if false;
+    }
+
+    match /rooms/{roomId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /members/{memberId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /events/{eventId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /results/{resultId} {
+      allow get: if isAdmin()
+        || resource.data.status == 'Published'
+        || resource.data.status == 'published';
+      allow list: if isAdmin()
+        || resource.data.status == 'Published'
+        || resource.data.status == 'published';
+      allow write: if isAdmin();
+    }
+
+    match /points/{pointId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /mvpAwards/{awardId} {
+      allow get: if isAdmin()
+        || resource.data.status == 'Published'
+        || resource.data.status == 'published';
+      allow list: if isAdmin()
+        || resource.data.status == 'Published'
+        || resource.data.status == 'published';
+      allow write: if isAdmin();
+    }
+
+    match /pointSettings/{settingId} {
+      allow read, write: if isAdmin();
+    }
+  }
+}

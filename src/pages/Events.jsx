@@ -1,0 +1,5 @@
+import { Link } from 'react-router-dom'
+import { CalendarDays, ArrowUpRight } from 'lucide-react'
+import Badge from '../components/common/Badge'
+import useLeagueData from '../useLeagueData'
+export default function Events(){const events=useLeagueData((state)=>state.events);return <div className="content-stack"><div className="page-heading"><div><h2>Events & Competitions</h2><p>Jadwal dan hasil kegiatan mingguan CDL.</p></div><Badge>{events.length} Events</Badge></div>{events.length===0?<div className="empty-state">Belum ada event di Firestore.</div>:<div className="event-cards">{events.map(e=><Link to={`/events/${e.id}`} className="event-card" key={e.id}><div className="event-card-icon"><CalendarDays size={22}/></div><div className="event-card-body"><div className="event-card-meta"><span>{e.category}</span><Badge tone={e.status==='Upcoming'?'blue':'green'}>{e.status}</Badge></div><h3>{e.title}</h3><p>{e.description}</p><div className="event-card-date">{new Date(e.date).toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'})}</div></div><ArrowUpRight size={18}/></Link>)}</div>}</div>}

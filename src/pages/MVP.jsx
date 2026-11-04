@@ -1,0 +1,4 @@
+import MVPCard from '../components/dashboard/MVPCard'
+import Badge from '../components/common/Badge'
+import useLeagueData from '../useLeagueData'
+export default function MVP(){const awards=useLeagueData((state)=>state.mvpAwards);return <div className="content-stack"><div className="page-heading"><div><h2>MVP & Awards</h2><p>Apresiasi untuk individu dan kamar dengan kontribusi terbaik.</p></div><Badge>Weekly & monthly</Badge></div><div className="mvp-page-grid"><MVPCard/><div className="panel"><h3>League Awards</h3><p className="muted">Kategori penghargaan CDL</p>{awards.length?awards.map((award,index)=><div className="award-row" key={award.id}><span className="award-number">{String(index+1).padStart(2,'0')}</span><strong>{award.title}</strong><span className="muted">{award.status==='Published'?award.memberName:'Pending'}</span></div>):<div className="empty-state">Belum ada penghargaan.</div>}</div></div></div>}
