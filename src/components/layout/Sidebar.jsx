@@ -19,7 +19,7 @@ export default function Sidebar() {
     {open && <button className="sidebar-backdrop" onClick={() => setOpen(false)} aria-label="Close menu" />}
     <aside className={`sidebar ${open ? 'sidebar-open' : ''}`}>
       <div className="brand">
-        <img src="/logo.svg" alt="CDL logo" />
+        <img src="/logo-idn-boarding-school.png" alt="CDL logo" />
         <div><strong>CAKRATAMA</strong><span>DORMITORY LEAGUE</span></div>
         <button className="close-menu" onClick={() => setOpen(false)} aria-label="Close menu"><X size={18}/></button>
       </div>
